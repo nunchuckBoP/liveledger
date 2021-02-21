@@ -228,4 +228,4 @@ LOGOUT_REDIRECT_URL = 'home'
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join (BASE_DIR, 'media')
-STATIC_ROOT = os.path.join (BASE_DIR, 'static')
+STATIC_ROOT = os.path.join (BASE_DIR, 'env', 'var', 'www', 'static')
