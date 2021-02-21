@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <th>Created By</th>
+            <th>Description</th>
+            <th>Balance</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for i in objects %}
+                <tr>
+                    <td>{{ i.created_by }}</td>
+                    <td><a href="{% url 'ledgeritem-list' ledgerid=i.id %}">{{ i.description }}</a></td>
+                    <td>{{ i.balance }}</td>
+                    <td>
+                        {% if i.created_by == request.user %}
+                            <a href="{% url 'ledger-delete' pk=i.pk %}">Delete</a>
+                            <br />
+                            <a href="{% url 'ledger-share' pk=i.pk %}">Share</a>
+                        {% else %}
+                            <a href="{% url 'ledger-share-remove-me' pk=i.pk %}">Remove</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'ledger-create' %}">Create New Ledger</a>
+{% endblock %}

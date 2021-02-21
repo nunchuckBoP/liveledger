@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="jumbotron">
+        <table class="table">
+            <tr>
+                <td>Ledger:</td>
+                <td>{{ ledger.description }}</td>
+            </tr>
+            <tr>
+                <td>Current Balance:</td>
+                <td>{{ ledger.balance }}</td>
+            </tr>
+        </table>
+    </h1>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <th>Date</th>
+            <th>Created By</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for i in object_list %}
+                <tr>
+                    <td>{{ i.created_on }}</td>
+                    <td>{{ i.created_by }}</td>
+                    <td>{{ i.description }}</td>
+                    <td>{{ i.get_amount }}</td>
+                    {% if i.created_by == request.user %}
+                        <td>
+                            <a href="{% url 'ledgeritem-update' pk=i.pk %}">Update</a>
+                            <br />
+                            <a href="{% url 'ledgeritem-delete' pk=i.pk %}">Delete</a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="{% url 'ledgeritem-inquire' pk=i.pk %}">Inquire</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'ledgeritem-create' ledgerid=ledger.pk %}">Create New Item</a>
+{% endblock %}
