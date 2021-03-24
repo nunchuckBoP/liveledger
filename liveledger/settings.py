@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # DEVEOLOPMENT MODE
-DEV_MODE = True
+DEV_MODE = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -27,9 +27,13 @@ DEV_MODE = True
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', 'liveledger.panici.home']
+ALLOWED_HOSTS = [
+                'localhost', 
+                'liveledger.panici.home',
+                'liveledger.neechsoft.com',
+                ]
 
 
 # Application definition
