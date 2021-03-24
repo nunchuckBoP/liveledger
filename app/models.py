@@ -1,6 +1,7 @@
 from django.db import models
 from djmoney.models.fields import MoneyField
 from django.contrib.auth.models import User
+from django.db.models import Sum
 import datetime
 
 class Ledger(models.Model):
@@ -14,11 +15,20 @@ class Ledger(models.Model):
     def balance(self):
         # adds all of the ledger items up for the ledger
         # and calculates the balance
-        items = LedgerItem.objects.filter(ledger=self)
-        total = 0.0
-        for i in items:
-            total = total + i.get_amount
-        return total
+        #items = LedgerItem.objects.filter(ledger=self)
+        #total = 0.0
+        #for i in items:
+        #    total = total + i.get_amount
+        #return total
+
+        # get the deducted totals
+        withdrawl_total = LedgerItem.objects.filter(ledger=self).filter(income=False).aggregate(Sum('amount'))
+
+        # gets the addition totals
+        deposit_total = LedgerItem.objects.filter(ledger=self).filter(income=True).aggregate(Sum('amount'))
+        
+        # returns the additions minus the deductions
+        return round(deposit_total['amount__sum'] - withdrawl_total['amount__sum'], 2)
 
     def __str__(self):  
         return self.description
