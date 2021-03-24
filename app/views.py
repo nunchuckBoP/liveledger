@@ -16,6 +16,9 @@ from app.models import Ledger, LedgerItem
 import app.forms
 import app.mixins
 
+class RedirectHomeView(RedirectView):
+    url = reverse_lazy('home')
+
 class HomeView(TemplateView):
     template_name = "home.html"
 

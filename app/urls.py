@@ -18,6 +18,7 @@ from django.urls import path
 import app.views
 
 urlpatterns = [
+    path('', app.views.RedirectHomeView.as_view()),
     path('home/', app.views.HomeView.as_view(), name='home'),
     path('index/', app.views.LedgerListView.as_view(), name='ledger-list'),
     path('create/', app.views.LedgerCreateView.as_view(), name='ledger-create'),
