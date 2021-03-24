@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # DEVEOLOPMENT MODE
-DEV_MODE = False
+DEV_MODE = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
