@@ -28,17 +28,16 @@ class ForbiddenView(TemplateView):
 # Create your views here.
 class LedgerListView(LoginRequiredMixin, ListView):
     model = Ledger
-    paginate_by = 100
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         if self.request.user.is_authenticated:
-            objects = Ledger.objects.filter(
+            object_list = Ledger.objects.filter(
                             Q(created_by=self.request.user) | Q(shared_with=self.request.user)
-                        ).order_by('description')
-            context['objects'] = objects
-
+                        ).order_by('description').distinct()
+            context['object_list'] = object_list
+            print(object_list)
             return context
         else:
             redirect(reverse_lazy('login'))
@@ -344,6 +343,9 @@ class LedgerItemInquireView(LoginRequiredMixin, FormView):
 
         ledger_item = get_object_or_404(LedgerItem, pk=self.kwargs.get('pk'))
 
+        # gets the item_id
+        item_id = ledger_item.id
+
         # sending the inquiry to
         recipiant = ledger_item.created_by.email
 
@@ -354,6 +356,7 @@ class LedgerItemInquireView(LoginRequiredMixin, FormView):
         subject = "%s: %s" % (ledger_item.ledger, ledger_item)
 
         initial_dict = {
+            'item_id':item_id,
             'to_user':recipiant,
             'from_user':sender,
             'subject':subject,
@@ -371,9 +374,15 @@ class LedgerItemInquireView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
 
-        print("about to print the data")
-
         # send the email to the user
-        print(form.cleaned_data)
+        item_id = form.cleaned_data.get('item_id')
+        message = form.cleaned_data.get('message')
+        data_object = LedgerItem.objects.get(id=item_id)
+        subject = "%s: %s" % (data_object.ledger, data_object)
+        recipiant = data_object.created_by.email
+        sender = self.request.user.email
 
-        return super(LedgerItemInquireView, self).form_valid(form)
+        # calls the send email method of the form
+        form.send_email(recipiant, sender, subject, message)
+
+        return redirect('ledgeritem-list', pk=data_object.ledger.id)

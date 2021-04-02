@@ -2,6 +2,7 @@ from django.db import models
 from djmoney.models.fields import MoneyField
 from django.contrib.auth.models import User
 from django.db.models import Sum
+import decimal
 import datetime
 
 class Ledger(models.Model):
@@ -23,9 +24,13 @@ class Ledger(models.Model):
 
         # get the deducted totals
         withdrawl_total = LedgerItem.objects.filter(ledger=self).filter(income=False).aggregate(Sum('amount'))
+        if withdrawl_total['amount__sum'] is None:
+            withdrawl_total['amount__sum'] = decimal.Decimal(0.0)
 
         # gets the addition totals
         deposit_total = LedgerItem.objects.filter(ledger=self).filter(income=True).aggregate(Sum('amount'))
+        if deposit_total['amount__sum'] is None:
+            deposit_total['amount__sum'] = decimal.Decimal(0.0)
         
         # returns the additions minus the deductions
         return round(deposit_total['amount__sum'] - withdrawl_total['amount__sum'], 2)

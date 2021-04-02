@@ -9,7 +9,7 @@
             <th>Actions</th>
         </thead>
         <tbody>
-            {% for i in objects %}
+            {% for i in object_list %}
                 <tr>
                     <td>{{ i.created_by }}</td>
                     <td><a href="{% url 'ledgeritem-list' ledgerid=i.id %}">{{ i.description }}</a></td>

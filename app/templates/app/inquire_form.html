@@ -3,6 +3,10 @@
 {% block content %}
 
     <h1 class="jumbotron">{{ heading_text }}</h1>
+    <p>
+        Inquire about a recent transaction to the user that created it. There are no records kept of these
+        inquiries.
+    </p>
 
     <form method="post" class="uniForm">
         {% csrf_token %}
