@@ -31,7 +31,7 @@ class InquireForm(forms.Form):
             body=message,
             from_email=domain_address,
             to=[to_address],
-            reply_to=[domain_address]
+            reply_to=[from_address]
         )
 
         email.send(fail_silently=False)
