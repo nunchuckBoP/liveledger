@@ -16,22 +16,12 @@ class InquireForm(forms.Form):
 
     def send_email(self, domain_address, to_address, from_address, subject, message):
         # send the email
-
-        info = {
-            'domain_address':domain_address,
-            'to_address':to_address,
-            'from_address':from_address,
-            'subject':subject,
-            'message':message
-        }
-        print(info)
-
         email = EmailMessage(
             subject=subject,
             body=message,
             from_email=domain_address,
             to=[to_address],
-            reply_to=[from_address]
+            cc=[from_address],
+            reply_to=[domain_address, from_address]
         )
-
         email.send(fail_silently=False)

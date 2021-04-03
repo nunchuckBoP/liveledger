@@ -379,9 +379,9 @@ class LedgerItemInquireView(LoginRequiredMixin, FormView):
         item_id = form.cleaned_data.get('item_id')
         message = form.cleaned_data.get('message')
         data_object = LedgerItem.objects.get(id=item_id)
-        subject = "%s: %s" % (data_object.ledger, data_object)
         recipiant = data_object.created_by.email
         sender = self.request.user.email
+        subject = "From %s RE:%s %s" % (sender, data_object.ledger, data_object)
         domain_email = settings.EMAIL_DOMAIN_ADDRESS
 
         # calls the send email method of the form
