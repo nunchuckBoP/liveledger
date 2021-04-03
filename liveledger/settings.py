@@ -233,8 +233,7 @@ MEDIA_ROOT = os.path.join (BASE_DIR, 'media')
 STATIC_ROOT = os.path.join (BASE_DIR, 'env', 'var', 'www', 'static')
 
 # email variables
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USERNAME = config('EMAIL_HOST_USERNAME')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_BACKEND = 'django_mailjet.backends.MailjetBackend'
+MAILJET_API_KEY = config('EMAIL_HOST_USERNAME')
+MAILJET_API_SECRET = config('EMAIL_HOST_PASSWORD')
+EMAIL_DOMAIN_ADDRESS = config('EMAIL_DOMAIN_ADDRESS')

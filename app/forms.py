@@ -1,7 +1,7 @@
 from django import forms
 import app.validators
 import app.mixins
-import django.core.mail
+from django.core.mail import EmailMessage
 
 class LedgerShareForm(forms.Form):
     shared_user = forms.CharField(label='User or Email', max_length=256, \
@@ -14,7 +14,24 @@ class InquireForm(forms.Form):
     subject = forms.CharField(label="Subject", max_length=256, disabled=True, required=False)
     message = forms.CharField(label="Message", max_length=1024)
 
-    def send_email(self, to_address, from_address, subject, message):
-        django.core.mail.send_mail(
-            subject, message, from_address, [to_address]
+    def send_email(self, domain_address, to_address, from_address, subject, message):
+        # send the email
+
+        info = {
+            'domain_address':domain_address,
+            'to_address':to_address,
+            'from_address':from_address,
+            'subject':subject,
+            'message':message
+        }
+        print(info)
+
+        email = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=domain_address,
+            to=[to_address],
+            reply_to=[domain_address]
         )
+
+        email.send(fail_silently=False)

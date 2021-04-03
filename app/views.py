@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from app.models import Ledger, LedgerItem
 import app.forms
 import app.mixins
+import liveledger.settings as settings
 
 class RedirectHomeView(RedirectView):
     url = reverse_lazy('home')
@@ -381,8 +382,9 @@ class LedgerItemInquireView(LoginRequiredMixin, FormView):
         subject = "%s: %s" % (data_object.ledger, data_object)
         recipiant = data_object.created_by.email
         sender = self.request.user.email
+        domain_email = settings.EMAIL_DOMAIN_ADDRESS
 
         # calls the send email method of the form
-        form.send_email(recipiant, sender, subject, message)
+        form.send_email(domain_email, recipiant, sender, subject, message)
 
-        return redirect('ledgeritem-list', pk=data_object.ledger.id)
+        return redirect('ledgeritem-list', ledgerid=data_object.ledger.id)
