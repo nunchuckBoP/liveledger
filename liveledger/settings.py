@@ -101,8 +101,8 @@ else:
         'default' : {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME':'liveledger',
-            'USER':'postgres',
-            'PASSWORD': 'postgres',
+            'USER': os.environ.get('DB_USERNAME'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
             'HOST':'db',
             'PORT':'5432',
         }
