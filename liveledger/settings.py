@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 import os.path
 from dotenv import load_dotenv
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -101,10 +101,10 @@ else:
         'default' : {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME':'liveledger',
-            'USER':'django',
-            'PASSWORD': 'django',
+            'USER':'postgres',
+            'PASSWORD': 'postgres',
             'HOST':'db',
-            'PORT':'',
+            'PORT':'5432',
         }
     }
 
@@ -236,6 +236,6 @@ STATIC_ROOT = os.path.join (BASE_DIR, 'env', 'var', 'www', 'static')
 
 # email variables
 EMAIL_BACKEND = 'django_mailjet.backends.MailjetBackend'
-MAILJET_API_KEY = config('EMAIL_HOST_USERNAME')
-MAILJET_API_SECRET = config('EMAIL_HOST_PASSWORD')
-EMAIL_DOMAIN_ADDRESS = config('EMAIL_DOMAIN_ADDRESS')
+MAILJET_API_KEY = os.environ.get('EMAIL_HOST_USERNAME')
+MAILJET_API_SECRET = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_DOMAIN_ADDRESS = os.environ.get('EMAIL_DOMAIN_ADDRESS')
