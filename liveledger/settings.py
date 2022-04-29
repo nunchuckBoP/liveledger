@@ -99,10 +99,12 @@ if DEBUG:
 else:
     DATABASES = {
         'default' : {
-            'ENGINE': 'django.db.backends.mysql',
-            'OPTIONS': {
-                'read_default_file': '/home/neech/dbox.cnf'
-            }
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME':'liveledger',
+            'USER':'django',
+            'PASSWORD': 'django',
+            'HOST':'db',
+            'PORT':'',
         }
     }
 
